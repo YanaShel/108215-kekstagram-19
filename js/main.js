@@ -9,33 +9,37 @@ var messages = [
   'Лица у людей на фотке перекошены, как будто их избивают.Как можно было поймать такой неудачный момент ?!'
 ];
 
-var descriptions = ['В жизни каждого человека есть радостные мгновения' , 'Хочу оставить это здесь', 'Мое любимое фото'];
+var descriptions = ['В жизни каждого человека есть радостные мгновения', 'Хочу оставить это здесь', 'Мое любимое фото'];
 
 var names = ['Роман', 'Мария', 'Неопознаный енот', 'Кекс', 'Сергей', 'Мурка'];
 
+var srcImgs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+
 var getRandomNumber = function (min, max) {
-  return Math.floor(min + (Math.random() * (max - min)));
+  return Math.floor((Math.random() * (max - min)) + min);
 };
 
-var getRandomValue = function (arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+var getRandomIndex = function (arr) {
+  return Math.floor(Math.random() * arr.length);
 };
 
 var createPicture = function () {
   var picture = {};
-  picture.url = 'photos/' + getRandomNumber(1, 25) + '.jpg';
-  picture.description = getRandomValue(descriptions);
+  var imgIndex = getRandomIndex(srcImgs);
+  picture.url = 'photos/' + srcImgs[imgIndex] + '.jpg';
+  srcImgs.splice(imgIndex, 1);
+  picture.description = descriptions[getRandomIndex(descriptions)];
   picture.likes = getRandomNumber(15, 200);
   picture.comments = [
     {
       avatar: 'img/avatar-' + getRandomNumber(1, 6) + '.svg',
-      message: getRandomValue(messages),
-      name: getRandomValue(names)
+      message: messages[getRandomIndex(messages)],
+      name: names[getRandomIndex(names)]
     },
     {
       avatar: 'img/avatar-' + getRandomNumber(1, 6) + '.svg',
-      message: getRandomValue(messages),
-      name: getRandomValue(names)
+      message: messages[getRandomIndex(messages)],
+      name: names[getRandomIndex(names)]
     }
   ];
   return picture;
@@ -49,6 +53,28 @@ var createPictures = function (count) {
   return pictures;
 };
 
-console.log(createPictures(25));
+var pictures = createPictures(25);
+
+var pictureTemplate = document.querySelector('#picture')
+  .content
+  .querySelector('.picture');
+
+var similarListPictures = document.querySelector('.pictures');
+
+var renderPicture = function (picture) {
+  var pictureElement = pictureTemplate.cloneNode(true);
+  pictureElement.querySelector('.picture__img').src = picture.url;
+  pictureElement.querySelector('.picture__likes').textContent = picture.likes;
+  pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
+  return pictureElement;
+};
+
+var fragment = document.createDocumentFragment();
+
+for (var i = 0; i < pictures.length; i++) {
+  fragment.appendChild(renderPicture(pictures[i]));
+}
+
+similarListPictures.appendChild(fragment);
 
 
