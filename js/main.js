@@ -13,7 +13,15 @@ var descriptions = ['В жизни каждого человека есть ра
 
 var names = ['Роман', 'Мария', 'Неопознаный енот', 'Кекс', 'Сергей', 'Мурка'];
 
-var srcImgs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+var createNumberArray = function (counter) {
+  var arr = [];
+  for (var i = 1; i <= counter; i++) {
+    arr.push(i);
+  }
+  return arr;
+};
+
+var srcImgs = createNumberArray(25);
 
 var getRandomNumber = function (min, max) {
   return Math.floor((Math.random() * (max - min)) + min);
@@ -53,8 +61,6 @@ var createPictures = function (count) {
   return pictures;
 };
 
-var pictures = createPictures(25);
-
 var pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
@@ -63,18 +69,24 @@ var similarListPictures = document.querySelector('.pictures');
 
 var renderPicture = function (picture) {
   var pictureElement = pictureTemplate.cloneNode(true);
-  pictureElement.querySelector('.picture__img').src = picture.url;
-  pictureElement.querySelector('.picture__likes').textContent = picture.likes;
-  pictureElement.querySelector('.picture__comments').textContent = picture.comments.length;
+  var pictureImg = pictureElement.querySelector('.picture__img');
+  var pictureLikes = pictureElement.querySelector('.picture__likes');
+  var pictureComments = pictureElement.querySelector('.picture__comments');
+  pictureImg.src = picture.url;
+  pictureLikes.textContent = picture.likes;
+  pictureComments.textContent = picture.comments.length;
   return pictureElement;
 };
 
-var fragment = document.createDocumentFragment();
+var renderPictures = function (pictures) {
+  var fragment = document.createDocumentFragment();
 
-for (var i = 0; i < pictures.length; i++) {
-  fragment.appendChild(renderPicture(pictures[i]));
-}
+  for (var i = 0; i < pictures.length; i++) {
+    fragment.appendChild(renderPicture(pictures[i]));
+  }
+  similarListPictures.appendChild(fragment);
+};
 
-similarListPictures.appendChild(fragment);
+renderPictures(createPictures(25));
 
 
