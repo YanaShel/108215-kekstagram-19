@@ -9,7 +9,7 @@ var messages = [
   'Лица у людей на фотке перекошены, как будто их избивают.Как можно было поймать такой неудачный момент ?!'
 ];
 
-var descriptions = ['В жизни каждого человека есть радостные мгновения', 'Хочу оставить это здесь', 'Мое любимое фото'];
+var descriptions = ['В жизни каждого человека есть радостные мгновения', 'Хочу оставить это здесь', 'Мое любимое фото', 'Самое удачное фото из 100'];
 
 var names = ['Роман', 'Мария', 'Неопознаный енот', 'Кекс', 'Сергей', 'Мурка'];
 
@@ -87,6 +87,46 @@ var renderPictures = function (pictures) {
   similarListPictures.appendChild(fragment);
 };
 
-renderPictures(createPictures(25));
+var pictures = createPictures(25);
+renderPictures(pictures);
+
+// module3-task3
+
+var bigPicture = document.querySelector('.big-picture');
+bigPicture.classList.remove('hidden');
+
+var viewingBigPhoto = function (picture) {
+  // src full-size Photo
+  var pictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
+  pictureImg.src = picture.url;
+
+  // likes
+  var likesCount = bigPicture.querySelector('.likes-count');
+  likesCount.textContent = picture.likes;
+
+  // count comments
+  var commentsCount = bigPicture.querySelector('.comments-count');
+  commentsCount.textContent = picture.comments.length;
+
+  // description Photo
+  var descriptionPhoto = bigPicture.querySelector('.social__caption');
+  descriptionPhoto.textContent = picture.description;
+
+  // avatar + comments
+  var commentsBlock = bigPicture.querySelector('.social__comments');
+  var avatars = commentsBlock.querySelectorAll('.social__picture');
+  var commentsText = commentsBlock.querySelectorAll('.social__text');
+
+  for (var i = 0; i < picture.comments.length; i++) {
+    avatars[i].src = picture.comments[i].avatar;
+    avatars[i].alt = picture.comments[i].name;
+    commentsText[i].textContent = picture.comments[i].message;
+  }
+};
+
+viewingBigPhoto(pictures[0]);
+
+bigPicture.querySelector('.social__comment-count').classList.add('hidden');
+bigPicture.querySelector('.comments-loader').classList.add('hidden');
 
 
