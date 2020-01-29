@@ -90,41 +90,46 @@ var renderPictures = function (pictures) {
 var pictures = createPictures(25);
 renderPictures(pictures);
 
-// module3-task3
-
 var bigPicture = document.querySelector('.big-picture');
 bigPicture.classList.remove('hidden');
 
 var viewingBigPhoto = function (picture) {
-  // src full-size Photo
-  var pictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
-  pictureImg.src = picture.url;
-
-  // likes
+  var pictureImg = bigPicture.querySelector('.big-picture__img img');
   var likesCount = bigPicture.querySelector('.likes-count');
-  likesCount.textContent = picture.likes;
-
-  // count comments
   var commentsCount = bigPicture.querySelector('.comments-count');
-  commentsCount.textContent = picture.comments.length;
-
-  // description Photo
   var descriptionPhoto = bigPicture.querySelector('.social__caption');
-  descriptionPhoto.textContent = picture.description;
 
-  // avatar + comments
-  var commentsBlock = bigPicture.querySelector('.social__comments');
-  var avatars = commentsBlock.querySelectorAll('.social__picture');
-  var commentsText = commentsBlock.querySelectorAll('.social__text');
+  pictureImg.src = picture.url;
+  likesCount.textContent = picture.likes;
+  commentsCount.textContent = picture.comments.length;
+  descriptionPhoto.textContent = picture.description;
+};
+
+var commentsBlock = bigPicture.querySelector('.social__comments');
+
+var renderComment = function (commentsItem) {
+  var comment = commentsBlock.querySelector('.social__comment').cloneNode(true);
+  var avatar = comment.querySelector('.social__picture');
+  var commentText = comment.querySelector('.social__text');
+
+  avatar.src = commentsItem.avatar;
+  avatar.alt = commentsItem.name;
+  commentText.textContent = commentsItem.message;
+
+  return comment;
+};
+
+var renderComments = function (picture) {
+  var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < picture.comments.length; i++) {
-    avatars[i].src = picture.comments[i].avatar;
-    avatars[i].alt = picture.comments[i].name;
-    commentsText[i].textContent = picture.comments[i].message;
+    fragment.appendChild(renderComment(picture.comments[i]));
   }
+  commentsBlock.appendChild(fragment);
 };
 
 viewingBigPhoto(pictures[0]);
+renderComments(pictures[0]);
 
 bigPicture.querySelector('.social__comment-count').classList.add('hidden');
 bigPicture.querySelector('.comments-loader').classList.add('hidden');
