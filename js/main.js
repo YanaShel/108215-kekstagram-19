@@ -135,12 +135,14 @@ bigPicture.querySelector('.social__comment-count').classList.add('hidden');
 bigPicture.querySelector('.comments-loader').classList.add('hidden');
 
 // Показ формы редактирования
+
 var upLoadFileInput = document.querySelector('#upload-file');
 var imageEditor = document.querySelector('.img-upload__overlay');
 var closeImageEditor = document.querySelector('#upload-cancel');
+var bodyTag = document.querySelector('body');
 
 var onImgEditorEscPress = function (evt) {
-  if (evt.key === 'Escape') {
+  if (evt.key === 'Escape' && evt.target !== hashtagInput) {
     imageEditor.classList.add('hidden');
   }
 };
@@ -148,14 +150,17 @@ var onImgEditorEscPress = function (evt) {
 upLoadFileInput.addEventListener('change', function () {
   imageEditor.classList.remove('hidden');
   document.addEventListener('keydown', onImgEditorEscPress);
+  bodyTag.classList.add('modal-open');
 });
 
 closeImageEditor.addEventListener('click', function () {
   imageEditor.classList.add('hidden');
   document.removeEventListener('keydown', onImgEditorEscPress);
+  bodyTag.classList.remove('modal-open');
 });
 
 // Применение эффекта для изображения
+
 var slider = document.querySelector('.effect-level');
 var sliderLine = slider.querySelector('.effect-level__line');
 var sliderPin = sliderLine.querySelector('.effect-level__pin');
@@ -172,69 +177,41 @@ var onChangeEffectImg = function () {
 sliderPin.addEventListener('mouseup', onChangeEffectImg);
 
 var effectList = document.querySelector('.effects__list');
-var chrome = effectList.querySelector('#effect-chrome');
-var heat = effectList.querySelector('#effect-heat');
-var sepia = effectList.querySelector('#effect-sepia');
-var marvin = effectList.querySelector('#effect-marvin');
-var phobos = effectList.querySelector('#effect-phobos');
-var original = effectList.querySelector('#effect-none');
 
-original.addEventListener('click', function (evt) {
-  if (evt.target.value === 'none') {
+var effect = {
+  DEFAULT: 'none',
+  CHROME: 'chrome',
+  SEPIA: 'sepia',
+  MARVIN: 'marvin',
+  PHOBOS: 'phobos',
+  HEAT: 'heat'
+};
+
+var onChangeEffect = function (evt) {
+  if (evt.target.value === effect.DEFAULT) {
     imgPreview.style.filter = 'none';
-    // slider.classList.add('hidden');
+    slider.classList.add('hidden');
+  } else {
+    slider.classList.remove('hidden');
   }
-});
-
-chrome.addEventListener('click', function (evt) {
-  if (evt.target.value === 'chrome') {
-    imgPreview.style.filter = 'grayscale(' + grayscaleEffect() + ')';
+  if (evt.target.value === effect.CHROME) {
+    imgPreview.style.filter = 'grayscale(' + getEffectLevel() / 100 + ')';
   }
-});
-
-sepia.addEventListener('click', function (evt) {
-  if (evt.target.value === 'sepia') {
-    imgPreview.style.filter = 'sepia(' + sepiaEffect() + ')';
+  if (evt.target.value === effect.SEPIA) {
+    imgPreview.style.filter = 'sepia(' + getEffectLevel() / 100 + ')';
   }
-});
-
-marvin.addEventListener('click', function (evt) {
-  if (evt.target.value === 'marvin') {
+  if (evt.target.value === effect.MARVIN) {
     imgPreview.style.filter = 'invert(' + getEffectLevel() + '%)';
   }
-});
-
-phobos.addEventListener('click', function (evt) {
-  if (evt.target.value === 'phobos') {
-    imgPreview.style.filter = 'blur(' + phobosEffect() + 'px)';
+  if (evt.target.value === effect.PHOBOS) {
+    imgPreview.style.filter = 'blur(' + getEffectLevel() * 0.03 + 'px)';
   }
-});
-
-heat.addEventListener('click', function (evt) {
-  if (evt.target.value === 'heat') {
-    imgPreview.style.filter = 'brightness(' + brightness() + ')';
+  if (evt.target.value === effect.HEAT) {
+    imgPreview.style.filter = 'brightness(' + (getEffectLevel() * 0.02) + 1 + ')';
   }
-});
-
-// Для эффекта «Хром» — filter: grayscale(0..1)
-var grayscaleEffect = function () {
-  return getEffectLevel() / 100;
 };
 
-// Для эффекта «Сепия» — filter: sepia(0..1)
-var sepiaEffect = function () {
-  return getEffectLevel() / 100;
-};
-
-// Для эффекта «Фобос» — filter: blur(0..3px)
-var phobosEffect = function () {
-  return 3 / 100 * getEffectLevel();
-};
-
-// Для эффекта «Зной» — filter: brightness(1..3)
-var brightness = function () {
-  return (2 / 100 * getEffectLevel()) + 1;
-};
+effectList.addEventListener('click', onChangeEffect);
 
 var getEffectLevel = function () {
   var widthLine = sliderLine.clientWidth;
@@ -242,4 +219,76 @@ var getEffectLevel = function () {
   return Math.floor((sliderPinLeft * 100) / widthLine);
 };
 
+// Валидация хеш-тегов
 
+var hashtagInput = document.querySelector('.text__hashtags');
+
+var validateHashtags = function () {
+  var pattern = /^\#[а-яА-ЯёЁa-zA-Z0-9]+$/;
+  var hashtagsValue = hashtagInput.value;
+  var hashtags = hashtagsValue.split(' ');
+
+  var checkDoubleHashtag = function () {
+    var currentHashtag = hashtags[i];
+    var isResult;
+    for (var j = 0; j < hashtags.length; j++) {
+      if (currentHashtag.toLowerCase() === hashtags[j].toLowerCase() && j !== i) {
+        isResult = true;
+      }
+    }
+    return isResult;
+  };
+
+  for (var i = 0; i < hashtags.length; i++) {
+    if (hashtags[i].charAt(0) !== '#') {
+      hashtagInput.setCustomValidity('Хэш-тег должен начинается с символа # (решётка)');
+    } else if (hashtags[i] === '#') {
+      hashtagInput.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
+    } else if (!pattern.test(hashtags[i])) {
+      hashtagInput.setCustomValidity('Cтрока после решётки должна состоять из букв и чисел');
+    } else if (hashtags[i].length > 20) {
+      hashtagInput.setCustomValidity('Максимальная длина одного хэш-тега 20 символов, включая решётку');
+    } else if (checkDoubleHashtag() === true) {
+      hashtagInput.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
+    } else if (hashtags.length > 5) {
+      hashtagInput.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
+    } else {
+      hashtagInput.setCustomValidity('');
+    }
+  }
+};
+
+hashtagInput.addEventListener('input', function () {
+  validateHashtags();
+});
+
+// маштаб
+
+var SCALE_STEP = 25;
+var SCALE_MIN = 25;
+var SCALE_MAX = 100;
+
+var scaleContainer = document.querySelector('.scale');
+var btnSmaller = scaleContainer.querySelector('.scale__control--smaller');
+var btnBigger = scaleContainer.querySelector('.scale__control--bigger');
+var scaleInput = scaleContainer.querySelector('.scale__control--value');
+
+btnSmaller.addEventListener('click', function () {
+  var currentScale = scaleInput.value.slice(0, 3);
+  currentScale = parseInt(currentScale, 10);
+  if (currentScale > SCALE_MIN) {
+    scaleInput.value = currentScale - SCALE_STEP;
+    imgPreview.style.transform = 'scale(' + scaleInput.value / 100 + ')';
+    scaleInput.value += '%';
+  }
+});
+
+btnBigger.addEventListener('click', function () {
+  var currentScale = scaleInput.value.slice(0, 3);
+  currentScale = parseInt(currentScale, 10);
+  if (currentScale < SCALE_MAX) {
+    scaleInput.value = currentScale + SCALE_STEP;
+    imgPreview.style.transform = 'scale(' + scaleInput.value / 100 + ')';
+    scaleInput.value += '%';
+  }
+});
