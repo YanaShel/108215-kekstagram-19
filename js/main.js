@@ -179,6 +179,8 @@ var currentEffectName;
 
 var effectList = document.querySelector('.effects__list');
 var onChangeEffect = function (evt) {
+  sliderPin.style.left = '100%';
+  sliderDepthColor.style.width = '100%';
   if (typeof evt.target.value === 'string') {
     if (evt.target.value === effect.DEFAULT) {
       imgPreview.style.filter = 'none';
