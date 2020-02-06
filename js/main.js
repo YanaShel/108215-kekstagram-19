@@ -142,7 +142,7 @@ bigPicture.querySelector('.comments-loader').classList.add('hidden');
 
 var upLoadFileInput = document.querySelector('#upload-file');
 var imageEditor = document.querySelector('.img-upload__overlay');
-var closeImageEditor = document.querySelector('#upload-cancel');
+var closeBtnEditor = document.querySelector('#upload-cancel');
 var bodyTag = document.querySelector('body');
 
 var onImgEditorEscPress = function (evt) {
@@ -151,16 +151,24 @@ var onImgEditorEscPress = function (evt) {
   }
 };
 
-upLoadFileInput.addEventListener('change', function () {
+var openImageEditor = function () {
   imageEditor.classList.remove('hidden');
   document.addEventListener('keydown', onImgEditorEscPress);
   bodyTag.classList.add('modal-open');
-});
+};
 
-closeImageEditor.addEventListener('click', function () {
+var closeImageEditor = function () {
   imageEditor.classList.add('hidden');
   document.removeEventListener('keydown', onImgEditorEscPress);
   bodyTag.classList.remove('modal-open');
+};
+
+upLoadFileInput.addEventListener('change', function () {
+  openImageEditor();
+});
+
+closeBtnEditor.addEventListener('click', function () {
+  closeImageEditor();
 });
 
 // Применение эффекта для изображения
@@ -173,26 +181,23 @@ var effectLevelInput = slider.querySelector('.effect-level__value');
 var imgPreviewWrapper = document.querySelector('.img-upload__preview');
 var imgPreview = imgPreviewWrapper.querySelector('img');
 
-slider.classList.add('hidden');
-
 var currentEffectName;
 
 var effectList = document.querySelector('.effects__list');
 var onChangeEffect = function (evt) {
   sliderPin.style.left = '100%';
   sliderDepthColor.style.width = '100%';
-  if (typeof evt.target.value === 'string') {
-    if (evt.target.value === effect.DEFAULT) {
-      imgPreview.style.filter = 'none';
-      slider.classList.add('hidden');
-    } else {
-      slider.classList.remove('hidden');
-      currentEffectName = evt.target.value;
-      updateEffect(evt.target.value);
-    }
+  if (evt.target.value === effect.DEFAULT) {
+    imgPreview.style.filter = 'none';
+    slider.classList.add('hidden');
+  } else {
+    slider.classList.remove('hidden');
+    currentEffectName = evt.target.value;
+    updateEffect(evt.target.value);
   }
 };
-effectList.addEventListener('click', onChangeEffect);
+
+effectList.addEventListener('click', onChangeEffect, true);
 
 sliderPin.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
@@ -265,6 +270,8 @@ function updateEffect(effectName) {
   }
 }
 
+slider.classList.add('hidden');
+
 // Валидация хеш-тегов
 
 var hashtagInput = document.querySelector('.text__hashtags');
@@ -295,7 +302,7 @@ var validateHashtags = function () {
       hashtagInput.setCustomValidity('Cтрока после решётки должна состоять из букв и чисел');
     } else if (hashtags[i].length > 20) {
       hashtagInput.setCustomValidity('Максимальная длина одного хэш-тега 20 символов, включая решётку');
-    } else if (checkDoubleHashtag() === true) {
+    } else if (checkDoubleHashtag()) {
       hashtagInput.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
     } else if (hashtags.length > 5) {
       hashtagInput.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
@@ -319,30 +326,20 @@ var btnBigger = scaleContainer.querySelector('.scale__control--bigger');
 var scaleInput = scaleContainer.querySelector('.scale__control--value');
 
 scaleContainer.addEventListener('click', function (evt) {
-  if (evt.target === btnBigger) {
-    zoomIn();
-  }
-  if (evt.target === btnSmaller) {
-    zoomOut();
-  }
+  zoom(evt);
 });
 
-var zoomIn = function () {
+var zoom = function (evt) {
   var currentScale = scaleInput.value.slice(0, 3);
   currentScale = parseInt(currentScale, 10);
-  if (currentScale < SCALE_MAX) {
+  if (evt.target === btnBigger && currentScale < SCALE_MAX) {
     scaleInput.value = currentScale + SCALE_STEP;
-    imgPreviewWrapper.style.transform = 'scale(' + scaleInput.value / 100 + ')';
-    scaleInput.value += '%';
   }
-};
-
-var zoomOut = function () {
-  var currentScale = scaleInput.value.slice(0, 3);
-  currentScale = parseInt(currentScale, 10);
-  if (currentScale > SCALE_MIN) {
+  if (evt.target === btnSmaller && currentScale > SCALE_MIN) {
     scaleInput.value = currentScale - SCALE_STEP;
-    imgPreviewWrapper.style.transform = 'scale(' + scaleInput.value / 100 + ')';
+  }
+  imgPreviewWrapper.style.transform = 'scale(' + scaleInput.value / 100 + ')';
+  if (scaleInput.value.substr(-1) !== '%') {
     scaleInput.value += '%';
   }
 };
