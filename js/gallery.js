@@ -2,6 +2,7 @@
 
 (function () {
   var QUANTITY_PICTURES = 25;
+  var quantityComments = 2;
 
   var messages = [
     'Всё отлично!',
@@ -24,7 +25,8 @@
     'Неопознаный енот',
     'Кекс',
     'Сергей',
-    'Мурка'];
+    'Мурка'
+  ];
 
   var pictureTemplate = document.querySelector('#picture')
     .content
@@ -34,6 +36,19 @@
 
   var srcImgs = window.utils.createNumberArray(QUANTITY_PICTURES);
 
+  var createComments = function (count) {
+    var comments = [];
+    for (var i = 0; i < count; i++) {
+      var comment = {
+        avatar: 'img/avatar-' + window.utils.getRandomNumber(1, 6) + '.svg',
+        message: messages[window.utils.getRandomIndex(messages)],
+        name: names[window.utils.getRandomIndex(names)]
+      };
+      comments.push(comment);
+    }
+    return comments;
+  };
+
   var createPicture = function () {
     var picture = {};
     var imgIndex = window.utils.getRandomIndex(srcImgs);
@@ -41,18 +56,7 @@
     srcImgs.splice(imgIndex, 1);
     picture.description = descriptions[window.utils.getRandomIndex(descriptions)];
     picture.likes = window.utils.getRandomNumber(15, 200);
-    picture.comments = [
-      {
-        avatar: 'img/avatar-' + window.utils.getRandomNumber(1, 6) + '.svg',
-        message: messages[window.utils.getRandomIndex(messages)],
-        name: names[window.utils.getRandomIndex(names)]
-      },
-      {
-        avatar: 'img/avatar-' + window.utils.getRandomNumber(1, 6) + '.svg',
-        message: messages[window.utils.getRandomIndex(messages)],
-        name: names[window.utils.getRandomIndex(names)]
-      }
-    ];
+    picture.comments = createComments(quantityComments);
     return picture;
   };
 
