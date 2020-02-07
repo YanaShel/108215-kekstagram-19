@@ -28,7 +28,7 @@
 
   scaleContainer.addEventListener('click', function (evt) {
     zoom(evt);
-  });
+  }, true);
 
 })();
 
