@@ -5,11 +5,11 @@
   var imageEditor = document.querySelector('.img-upload__overlay');
   var closeBtnEditor = document.querySelector('#upload-cancel');
   var hashtagInput = document.querySelector('.text__hashtags');
-  var commentsBlock = document.querySelector('.text__description');
-  var bodyTag = document.querySelector('body');
+  var commentDescription = document.querySelector('.text__description');
+  var bodyTag = document.body;
 
   var onImgEditorEscPress = function (evt) {
-    if (evt.key === window.utils.ESC_KEY && evt.target !== hashtagInput && evt.target !== commentsBlock) {
+    if (evt.key === window.utils.ESC_KEY && evt.target !== hashtagInput && evt.target !== commentDescription) {
       imageEditor.classList.add('hidden');
     }
   };
