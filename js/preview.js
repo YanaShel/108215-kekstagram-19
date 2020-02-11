@@ -25,14 +25,8 @@
     for (var i = 0; i < picture.comments.length; i++) {
       fragment.appendChild(renderComment(picture.comments[i]));
     }
+    commentsBlock.textContent = '';
     commentsBlock.appendChild(fragment);
-  };
-
-  var removeComments = function () {
-    var comments = document.querySelectorAll('.social__comment');
-    for (var i = 2; i < comments.length; i++) {
-      comments[i].remove();
-    }
   };
 
   var viewingBigPhoto = function (picture) {
@@ -45,7 +39,6 @@
     likesCount.textContent = picture.likes;
     commentsCount.textContent = picture.comments.length;
     descriptionPhoto.textContent = picture.description;
-    removeComments();
     renderComments(picture);
   };
 
