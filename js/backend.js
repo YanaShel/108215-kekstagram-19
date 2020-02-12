@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/kekstagram/data';
+  var URL = 'https://js.dump.academy/kekstagram';
   var StatusCode = {
     OK: 200,
     FOUND: 302,
@@ -58,11 +58,18 @@
 
   var load = function (onLoad, onError) {
     var xhr = serverRequest(onLoad, onError);
-    xhr.open('GET', URL);
+    xhr.open('GET', URL + '/data');
     xhr.send();
   };
 
+  var save = function (data, onLoad, onError) {
+    var xhr = serverRequest(onLoad, onError);
+    xhr.open('POST', URL);
+    xhr.send(data);
+  };
+
   window.backend = {
-    load: load
+    load: load,
+    save: save
   };
 })();

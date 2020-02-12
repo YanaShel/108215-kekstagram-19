@@ -1,8 +1,14 @@
 'use strict';
 
 (function () {
+  var scaleInput = document.querySelector('.scale__control--value');
+  var imgPreviewWrapper = document.querySelector('.img-upload__preview');
+  var imgPreview = document.querySelector('.img-upload__preview img');
+  var slider = document.querySelector('.effect-level');
   var hashtagInput = document.querySelector('.text__hashtags');
+  var commentDescription = document.querySelector('.text__description');
   var formUpload = document.querySelector('.img-upload__form');
+  var imageEditor = document.querySelector('.img-upload__overlay');
 
   var validateHashtags = function () {
     var pattern = /^\#[а-яА-ЯёЁa-zA-Z0-9]+$/;
@@ -39,13 +45,30 @@
     }
   };
 
+  var resetForm = function () {
+    scaleInput.value = '100%';
+    imgPreviewWrapper.style.transform = 'scale(1)';
+    imgPreview.style.filter = 'none';
+    hashtagInput.value = '';
+    commentDescription.value = '';
+    slider.classList.add('hidden');
+  };
+
+  var onFormSubmit = function (evt) {
+    window.backend.save(new FormData(formUpload), function () {
+      imageEditor.classList.add('hidden');
+    });
+    resetForm();
+    evt.preventDefault();
+  };
+
   hashtagInput.addEventListener('input', function () {
     validateHashtags();
   });
 
-  formUpload.addEventListener('submit', function () {
-    validateHashtags();
-  });
+  formUpload.addEventListener('submit', onFormSubmit);
+
+
 })();
 
 
