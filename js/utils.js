@@ -20,26 +20,12 @@
     return Math.floor(Math.random() * arr.length);
   };
 
-  var showErrorMessage = function (errorMessage) {
-    var node = document.createElement('div');
-    node.classList.add('error');
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
-  };
-
-  var removeErrorMessage = function () {
-    var errorMessage = document.querySelector('.error');
-    document.body.removeChild(errorMessage);
-  };
-
   window.utils = {
     ESC_KEY: ESC_KEY,
     ENTER_KEY: ENTER_KEY,
     createNumberArray: createNumberArray,
     getRandomNumber: getRandomNumber,
-    getRandomIndex: getRandomIndex,
-    showErrorMessage: showErrorMessage,
-    removeErrorMessage: removeErrorMessage
+    getRandomIndex: getRandomIndex
   };
 
 })();
