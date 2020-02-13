@@ -1,18 +1,20 @@
 'use strict';
 
 (function () {
-  var scaleInput = document.querySelector('.scale__control--value');
-  var imgPreviewWrapper = document.querySelector('.img-upload__preview');
-  var imgPreview = document.querySelector('.img-upload__preview img');
-  var slider = document.querySelector('.effect-level');
   var upLoadFileInput = document.querySelector('#upload-file');
   var imageEditor = document.querySelector('.img-upload__overlay');
-  var closeBtnEditor = document.querySelector('#upload-cancel');
-  var hashtagInput = document.querySelector('.text__hashtags');
-  var commentDescription = document.querySelector('.text__description');
+  var loadPhotoInput = document.querySelector('#upload-file');
+  var scaleInput = imageEditor.querySelector('.scale__control--value');
+  var closeBtnEditor = imageEditor.querySelector('#upload-cancel');
+  var hashtagInput = imageEditor.querySelector('.text__hashtags');
+  var commentDescription = imageEditor.querySelector('.text__description');
+  var slider = imageEditor.querySelector('.effect-level');
+  var imgPreviewWrapper = imageEditor.querySelector('.img-upload__preview');
+  var imgPreview = imgPreviewWrapper.querySelector('.img-upload__preview img');
   var bodyTag = document.body;
 
   var resetForm = function () {
+    loadPhotoInput.value = '';
     scaleInput.value = '100%';
     imgPreviewWrapper.style.transform = 'scale(1)';
     imgPreview.style.filter = 'none';

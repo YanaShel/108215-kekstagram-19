@@ -45,7 +45,6 @@
   var onFormSubmit = function (evt) {
     window.backend.save(new FormData(formUpload), showSuccessMessage, showErrorMessage);
     evt.preventDefault();
-
   };
 
   var removeMessage = function () {
@@ -68,6 +67,7 @@
         removeMessage();
       }
     });
+    window.form.resetForm();
   };
 
   var showErrorMessage = function () {
@@ -86,10 +86,6 @@
     validateHashtags();
   });
   formUpload.addEventListener('submit', onFormSubmit);
-  formUpload.addEventListener('submit', function () {
-    imageEditor.classList.add('hidden');
-    window.form.resetForm();
-  });
   document.removeEventListener('click', function () {
     removeMessage();
   });
