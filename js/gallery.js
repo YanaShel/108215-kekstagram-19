@@ -22,14 +22,13 @@
 
   var renderPictures = function (pictures) {
     var fragment = document.createDocumentFragment();
-
     for (var i = 0; i < QUANTITY_PICTURES; i++) {
       fragment.appendChild(renderPicture(pictures[i]));
     }
     similarListPictures.appendChild(fragment);
   };
 
-  window.backend.load(renderPictures, window.utils.showErrorMessage);
+  window.backend.load(renderPictures);
 
 })();
 
