@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var filterBlock = document.querySelector('.img-filters');
   var picturesWrapper = document.querySelector('.pictures');
   var bigPicture = document.querySelector('.big-picture');
   var closeBtnBigPicture = bigPicture.querySelector('.big-picture__cancel');
@@ -31,11 +32,14 @@
 
   var picturesData;
   var loadPictureData = function (data) {
+    if (data) {
+      filterBlock.classList.remove('img-filters--inactive');
+    }
     picturesData = data;
     return picturesData;
   };
 
-  window.backend.load(loadPictureData, window.utils.showErrorMessage);
+  window.backend.load(loadPictureData);
 
   var viewingBigPhoto = function (picture) {
     var pictureImg = bigPicture.querySelector('.big-picture__img img');
