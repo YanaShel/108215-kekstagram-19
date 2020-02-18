@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var picturesData;
   var filterBlock = document.querySelector('.img-filters');
   var picturesWrapper = document.querySelector('.pictures');
   var bigPicture = document.querySelector('.big-picture');
@@ -30,7 +31,6 @@
     commentsBlock.appendChild(fragment);
   };
 
-  var picturesData;
   var loadPictureData = function (data) {
     if (data) {
       filterBlock.classList.remove('img-filters--inactive');

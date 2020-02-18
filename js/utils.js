@@ -20,12 +20,28 @@
     return Math.floor(Math.random() * arr.length);
   };
 
+  var DEBOUNCE_INTERVAL = 500;
+
+  var debounce = function (cb) {
+    var lastTimeout = null;
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   window.utils = {
     ESC_KEY: ESC_KEY,
     ENTER_KEY: ENTER_KEY,
     createNumberArray: createNumberArray,
     getRandomNumber: getRandomNumber,
-    getRandomIndex: getRandomIndex
+    getRandomIndex: getRandomIndex,
+    debounce: debounce
   };
 
 })();

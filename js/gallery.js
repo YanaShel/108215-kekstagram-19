@@ -1,10 +1,13 @@
 'use strict';
 
 (function () {
-  var QUANTITY_PICTURES = 25;
+  var QUANTITY_PICTURES_DEFAULT = 25;
+  var QUANTITY_PICTURES_RANDOM = 10;
 
   var filterBlock = document.querySelector('.img-filters');
   var similarListPictures = document.querySelector('.pictures');
+  var filterForm = filterBlock.querySelector('.img-filters__form');
+  var picturesData = [];
 
   var pictureTemplate = document.querySelector('#picture')
     .content
@@ -24,7 +27,6 @@
     });
   };
 
-  var picturesData = [];
   var loadPictureData = function (data) {
     if (data) {
       renderPictures(data);
@@ -44,38 +46,18 @@
     return pictureElement;
   };
 
-  // По умолчанию — фотографии в изначальном порядке с сервера
-
-  var filterDefault = filterBlock.querySelector('#filter-default');
-  filterDefault.addEventListener('click', function () {
-    cleanPictures();
-    renderPictures(picturesData);
-    removeActiveBtn();
-    filterDefault.classList.add('img-filters__button--active');
-  });
-
   var renderPictures = function (pictures) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < QUANTITY_PICTURES; i++) {
+    for (var i = 0; i < QUANTITY_PICTURES_DEFAULT; i++) {
       fragment.appendChild(renderPicture(pictures[i]));
     }
     similarListPictures.appendChild(fragment);
   };
 
-  // Случайные — 10 случайных, не повторяющихся фотографий.
-
-  var filterRandom = filterBlock.querySelector('#filter-random');
-  filterRandom.addEventListener('click', function () {
-    cleanPictures();
-    renderRandomPictures(picturesData);
-    removeActiveBtn();
-    filterRandom.classList.add('img-filters__button--active');
-  });
-
   var renderRandomPictures = function (pictures) {
     var copyPictures = pictures.slice();
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < QUANTITY_PICTURES_RANDOM; i++) {
       var pictureIndex = window.utils.getRandomIndex(copyPictures);
       fragment.appendChild(renderPicture(copyPictures[pictureIndex]));
       copyPictures.splice(pictureIndex, 1);
@@ -83,27 +65,28 @@
     similarListPictures.appendChild(fragment);
   };
 
-  // Обсуждаемые — фотографии, отсортированные в порядке убывания количества комментариев.
-
   var renderDiscussedPictures = function (pictures) {
     var copyPictures = pictures.slice();
     copyPictures.sort(function (second, first) {
       return first.comments.length - second.comments.length;
     });
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < QUANTITY_PICTURES; i++) {
-      fragment.appendChild(renderPicture(copyPictures[i]));
-    }
-    similarListPictures.appendChild(fragment);
+    renderPictures(copyPictures);
   };
 
-  var filterDiscussed = filterBlock.querySelector('#filter-discussed');
-  filterDiscussed.addEventListener('click', function () {
+  filterForm.addEventListener('click', function (evt) {
     cleanPictures();
-    renderDiscussedPictures(picturesData);
+    if (evt.target.id === 'filter-default') {
+      renderPictures(picturesData);
+    }
+    if (evt.target.id === 'filter-random') {
+      renderRandomPictures(picturesData);
+    }
+    if (evt.target.id === 'filter-discussed') {
+      renderDiscussedPictures(picturesData);
+    }
     removeActiveBtn();
-    filterDiscussed.classList.add('img-filters__button--active');
-  });
+    evt.target.classList.add('img-filters__button--active');
+  }, true);
 
   window.backend.load(loadPictureData);
 
