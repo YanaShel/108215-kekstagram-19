@@ -74,19 +74,23 @@
   };
 
   filterForm.addEventListener('click', function (evt) {
-    cleanPictures();
     if (evt.target.id === 'filter-default') {
-      renderPictures(picturesData);
+      onFilterChange(renderPictures);
     }
     if (evt.target.id === 'filter-random') {
-      renderRandomPictures(picturesData);
+      onFilterChange(renderRandomPictures);
     }
     if (evt.target.id === 'filter-discussed') {
-      renderDiscussedPictures(picturesData);
+      onFilterChange(renderDiscussedPictures);
     }
     removeActiveBtn();
     evt.target.classList.add('img-filters__button--active');
   }, true);
+
+  var onFilterChange = window.utils.debounce(function (callback) {
+    cleanPictures();
+    callback(picturesData);
+  });
 
   window.backend.load(loadPictureData);
 
