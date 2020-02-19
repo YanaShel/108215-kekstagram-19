@@ -62,8 +62,6 @@
     }
   };
 
-  // Изменение глубины эффекта module5-task3
-
   sliderPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var startCoords = {
