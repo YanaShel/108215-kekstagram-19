@@ -1,16 +1,21 @@
 'use strict';
 
 (function () {
-  var picturesData;
+
+  var INITIAL_NUMBER_OF_COMMENTS = 0;
+  var PORTION_COMMENTS = 5;
+
+  var bodyTag = document.body;
   var filterBlock = document.querySelector('.img-filters');
   var picturesWrapper = document.querySelector('.pictures');
   var bigPicture = document.querySelector('.big-picture');
+  var fileChooser = document.querySelector('.img-upload__start input[type=file]');
   var closeBtnBigPicture = bigPicture.querySelector('.big-picture__cancel');
   var commentsBlock = bigPicture.querySelector('.social__comments');
   var loaderButton = bigPicture.querySelector('.comments-loader');
   var commentCount = bigPicture.querySelector('.social__comment-count');
-  var bodyTag = document.body;
-  var commentsData = [];
+  var picturesData;
+  var commentsData;
 
   var renderComment = function (commentsItem) {
     var comment = commentsBlock.querySelector('.social__comment').cloneNode(true);
@@ -26,11 +31,11 @@
 
   var showLoaderBtn = function (quantityComments) {
     var counter;
-    if (commentsData.length < quantityComments + 5) {
+    if (commentsData.length < quantityComments + PORTION_COMMENTS) {
       counter = commentsData.length;
       loaderButton.classList.add('hidden');
     } else {
-      counter = quantityComments + 5;
+      counter = quantityComments + PORTION_COMMENTS;
       loaderButton.classList.remove('hidden');
     }
     return counter;
@@ -50,7 +55,7 @@
 
   var renderComments = function (comments) {
     commentsData = comments;
-    var numberCommentsDisplay = 0;
+    var numberCommentsDisplay = INITIAL_NUMBER_OF_COMMENTS;
     var counter = showLoaderBtn(numberCommentsDisplay);
     showComments(numberCommentsDisplay, counter, true);
   };
@@ -115,6 +120,7 @@
     bodyTag.classList.remove('modal-open');
     document.removeEventListener('keydown', onEscapePressPopup);
     loaderButton.removeEventListener('click', onLoaderButtonClick);
+    fileChooser.removeEventListener('change', window.uploadPicture.onChangePicture);
   };
 
   var loadPictureData = function (data) {
