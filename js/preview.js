@@ -7,7 +7,10 @@
   var bigPicture = document.querySelector('.big-picture');
   var closeBtnBigPicture = bigPicture.querySelector('.big-picture__cancel');
   var commentsBlock = bigPicture.querySelector('.social__comments');
+  var loaderButton = bigPicture.querySelector('.comments-loader');
+  var commentCount = bigPicture.querySelector('.social__comment-count');
   var bodyTag = document.body;
+  var commentsData = [];
 
   var renderComment = function (commentsItem) {
     var comment = commentsBlock.querySelector('.social__comment').cloneNode(true);
@@ -21,25 +24,36 @@
     return comment;
   };
 
-  var renderComments = function (comments) {
+  var showLoaderBtn = function (quantityComments) {
+    var counter;
+    if (commentsData.length < quantityComments + 5) {
+      counter = commentsData.length;
+      loaderButton.classList.add('hidden');
+    } else {
+      counter = quantityComments + 5;
+      loaderButton.classList.remove('hidden');
+    }
+    return counter;
+  };
+
+  var showComments = function (numberCommentsDisplay, counter, isClearComments) {
     var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < comments.length; i++) {
-      fragment.appendChild(renderComment(comments[i]));
+    for (var i = numberCommentsDisplay; i < counter; i++) {
+      fragment.appendChild(renderComment(commentsData[i]));
     }
-    commentsBlock.textContent = '';
+    if (isClearComments) {
+      commentsBlock.textContent = '';
+    }
     commentsBlock.appendChild(fragment);
+    commentCount.firstChild.textContent = counter + ' из ';
   };
 
-  var loadPictureData = function (data) {
-    if (data) {
-      filterBlock.classList.remove('img-filters--inactive');
-    }
-    picturesData = data;
-    return picturesData;
+  var renderComments = function (comments) {
+    commentsData = comments;
+    var numberCommentsDisplay = 0;
+    var counter = showLoaderBtn(numberCommentsDisplay);
+    showComments(numberCommentsDisplay, counter, true);
   };
-
-  window.backend.load(loadPictureData);
 
   var viewingBigPhoto = function (picture) {
     var pictureImg = bigPicture.querySelector('.big-picture__img img');
@@ -52,24 +66,6 @@
     commentsCount.textContent = picture.comments.length;
     descriptionPhoto.textContent = picture.description;
     renderComments(picture.comments);
-  };
-
-  var onEscapePressPopup = function (evt) {
-    if (evt.key === window.utils.ESC_KEY) {
-      closePopupPreview();
-    }
-  };
-
-  var openPopupPreview = function () {
-    bigPicture.classList.remove('hidden');
-    bodyTag.classList.add('modal-open');
-    document.addEventListener('keydown', onEscapePressPopup);
-  };
-
-  var closePopupPreview = function () {
-    bigPicture.classList.add('hidden');
-    bodyTag.classList.remove('modal-open');
-    document.removeEventListener('keydown', onEscapePressPopup);
   };
 
   var showBigPhoto = function (src) {
@@ -88,6 +84,12 @@
     }
   };
 
+  var onLoaderButtonClick = function () {
+    var numberCommentsDisplay = commentsBlock.children.length;
+    var counter = showLoaderBtn(numberCommentsDisplay);
+    showComments(numberCommentsDisplay, counter, false);
+  };
+
   var onPictureEnterPress = function (evt) {
     if (evt.key === window.utils.ENTER_KEY) {
       var srcActivePicture = evt.target.children[0].attributes.src.value;
@@ -95,8 +97,35 @@
     }
   };
 
-  bigPicture.querySelector('.social__comment-count').classList.add('hidden');
-  bigPicture.querySelector('.comments-loader').classList.add('hidden');
+  var onEscapePressPopup = function (evt) {
+    if (evt.key === window.utils.ESC_KEY) {
+      closePopupPreview();
+    }
+  };
+
+  var openPopupPreview = function () {
+    bigPicture.classList.remove('hidden');
+    bodyTag.classList.add('modal-open');
+    document.addEventListener('keydown', onEscapePressPopup);
+    loaderButton.addEventListener('click', onLoaderButtonClick);
+  };
+
+  var closePopupPreview = function () {
+    bigPicture.classList.add('hidden');
+    bodyTag.classList.remove('modal-open');
+    document.removeEventListener('keydown', onEscapePressPopup);
+    loaderButton.removeEventListener('click', onLoaderButtonClick);
+  };
+
+  var loadPictureData = function (data) {
+    if (data) {
+      filterBlock.classList.remove('img-filters--inactive');
+    }
+    picturesData = data;
+    return picturesData;
+  };
+
+  window.backend.load(loadPictureData);
 
   picturesWrapper.addEventListener('click', onPictureClick, true);
   picturesWrapper.addEventListener('keydown', onPictureEnterPress, true);
