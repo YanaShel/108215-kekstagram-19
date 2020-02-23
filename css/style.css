@@ -1429,7 +1429,7 @@ main {
   }
 
   .pictures {
-    -ms-grid-columns: (1fr)[3];
+    -ms-grid-columns: (1fr) [ 3 ];
     grid-template-columns: repeat(3, 1fr);
   }
 
@@ -1443,4 +1443,3 @@ main {
     grid-row: 1 / span 3;
   }
 }
-

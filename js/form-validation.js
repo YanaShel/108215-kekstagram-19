@@ -6,10 +6,26 @@
   var formUpload = document.querySelector('.img-upload__form');
   var imageEditor = document.querySelector('.img-upload__overlay');
   var mainTag = document.querySelector('main');
+  var pattern = /^\#[а-яА-ЯёЁa-zA-Z0-9]+$/;
+  var validate = true;
 
-  var validateHashtags = function () {
-    var pattern = /^\#[а-яА-ЯёЁa-zA-Z0-9]+$/;
+  var markInvalidField = function () {
+    if (!validate && hashtagInput.value) {
+      hashtagInput.style.backgroundColor = '#F6CECE';
+    }
+  };
+
+  var markValidField = function () {
+    hashtagInput.style.backgroundColor = 'white';
+  };
+
+  var onValidateHashtags = function () {
     var hashtagsValue = hashtagInput.value;
+    if (!hashtagsValue) {
+      hashtagInput.setCustomValidity('');
+      return;
+    }
+
     var hashtags = hashtagsValue.split(' ');
 
     var checkDoubleHashtag = function () {
@@ -24,20 +40,27 @@
     };
 
     for (var i = 0; i < hashtags.length; i++) {
-      if (hashtags[i].charAt(0) !== '#') {
-        hashtagInput.setCustomValidity('Хэш-тег должен начинается с символа # (решётка)');
+      if (!hashtags[i].startsWith('#')) {
+        hashtagInput.setCustomValidity('Хэш-тег должен начинатся с символа # (решётка)');
+        validate = false;
       } else if (hashtags[i] === '#') {
         hashtagInput.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
+        validate = false;
       } else if (!pattern.test(hashtags[i])) {
         hashtagInput.setCustomValidity('Cтрока после решётки должна состоять из букв и чисел');
+        validate = false;
       } else if (hashtags[i].length > 20) {
         hashtagInput.setCustomValidity('Максимальная длина одного хэш-тега 20 символов, включая решётку');
+        validate = false;
       } else if (checkDoubleHashtag()) {
         hashtagInput.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
+        validate = false;
       } else if (hashtags.length > 5) {
         hashtagInput.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
+        validate = false;
       } else {
         hashtagInput.setCustomValidity('');
+        validate = true;
       }
     }
   };
@@ -82,14 +105,17 @@
     addMessage(successMessageTemplate);
   };
 
-  hashtagInput.addEventListener('input', function () {
-    validateHashtags();
+  hashtagInput.addEventListener('input', onValidateHashtags);
+  hashtagInput.addEventListener('blur', function () {
+    markInvalidField();
+  });
+  hashtagInput.addEventListener('keydown', function () {
+    markValidField();
   });
   formUpload.addEventListener('submit', onFormSubmit);
   document.removeEventListener('click', function () {
     removeMessage();
   });
-
 })();
 
 
