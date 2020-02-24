@@ -1,12 +1,10 @@
 'use strict';
 
 (function () {
-
   var INITIAL_NUMBER_OF_COMMENTS = 0;
   var PORTION_COMMENTS = 5;
 
   var bodyTag = document.body;
-  var filterBlock = document.querySelector('.img-filters');
   var picturesWrapper = document.querySelector('.pictures');
   var bigPicture = document.querySelector('.big-picture');
   var fileChooser = document.querySelector('.img-upload__start input[type=file]');
@@ -31,7 +29,7 @@
 
   var showLoaderBtn = function (quantityComments) {
     var counter;
-    if (commentsData.length < quantityComments + PORTION_COMMENTS) {
+    if (commentsData.length <= quantityComments + PORTION_COMMENTS) {
       counter = commentsData.length;
       loaderButton.classList.add('hidden');
     } else {
@@ -74,12 +72,12 @@
   };
 
   var showBigPhoto = function (src) {
-    for (var i = 0; i < picturesData.length; i++) {
-      if (src === picturesData[i].url) {
+    picturesData.forEach(function (picture) {
+      if (src === picture.url) {
         openPopupPreview();
-        viewingBigPhoto(picturesData[i]);
+        viewingBigPhoto(picture);
       }
-    }
+    });
   };
 
   var onPictureClick = function (evt) {
@@ -124,11 +122,7 @@
   };
 
   var loadPictureData = function (data) {
-    if (data) {
-      filterBlock.classList.remove('img-filters--inactive');
-    }
     picturesData = data;
-    return picturesData;
   };
 
   window.backend.load(loadPictureData);

@@ -19,7 +19,7 @@
     hashtagInput.style.backgroundColor = 'white';
   };
 
-  var onValidateHashtags = function () {
+  var validateHashtags = function () {
     var hashtagsValue = hashtagInput.value;
     if (!hashtagsValue) {
       hashtagInput.setCustomValidity('');
@@ -105,7 +105,9 @@
     addMessage(successMessageTemplate);
   };
 
-  hashtagInput.addEventListener('input', onValidateHashtags);
+  hashtagInput.addEventListener('input', function () {
+    validateHashtags();
+  });
   hashtagInput.addEventListener('blur', function () {
     markInvalidField();
   });

@@ -11,12 +11,14 @@
   };
 
   var slider = document.querySelector('.effect-level');
+  var imgPreview = document.querySelector('.img-upload__preview img');
+  var effectList = document.querySelector('.effects__list');
   var sliderLine = slider.querySelector('.effect-level__line');
   var sliderPin = sliderLine.querySelector('.effect-level__pin');
   var sliderDepthColor = sliderLine.querySelector('.effect-level__depth');
   var effectLevelInput = slider.querySelector('.effect-level__value');
-  var imgPreview = document.querySelector('.img-upload__preview img');
-  var effectList = document.querySelector('.effects__list');
+  var currentEffectName;
+  slider.classList.add('hidden');
 
   var getEffectPercentLevel = function () {
     var widthLine = sliderLine.clientWidth;
@@ -30,7 +32,6 @@
     effectLevelInput.value = effectLevel;
   };
 
-  var currentEffectName;
   var onChangeEffect = function (evt) {
     sliderPin.style.left = '100%';
     sliderDepthColor.style.width = '100%';
@@ -45,20 +46,24 @@
   };
 
   var updateEffect = function (effectName) {
-    if (effectName === effect.CHROME) {
-      imgPreview.style.filter = 'grayscale(' + getEffectPercentLevel() / 100 + ')';
-    }
-    if (effectName === effect.SEPIA) {
-      imgPreview.style.filter = 'sepia(' + getEffectPercentLevel() / 100 + ')';
-    }
-    if (effectName === effect.MARVIN) {
-      imgPreview.style.filter = 'invert(' + getEffectPercentLevel() + '%)';
-    }
-    if (effectName === effect.PHOBOS) {
-      imgPreview.style.filter = 'blur(' + getEffectPercentLevel() * 0.03 + 'px)';
-    }
-    if (effectName === effect.HEAT) {
-      imgPreview.style.filter = 'brightness(' + ((getEffectPercentLevel() * 0.02) + 1) + ')';
+    switch (effectName) {
+      case effect.CHROME:
+        imgPreview.style.filter = 'grayscale(' + getEffectPercentLevel() / 100 + ')';
+        break;
+      case effect.SEPIA:
+        imgPreview.style.filter = 'grayscale(' + getEffectPercentLevel() / 100 + ')';
+        break;
+      case effect.MARVIN:
+        imgPreview.style.filter = 'invert(' + getEffectPercentLevel() + '%)';
+        break;
+      case effect.PHOBOS:
+        imgPreview.style.filter = 'blur(' + getEffectPercentLevel() * 0.03 + 'px)';
+        break;
+      case effect.HEAT:
+        imgPreview.style.filter = 'brightness(' + ((getEffectPercentLevel() * 0.02) + 1) + ')';
+        break;
+      default:
+        imgPreview.style.filter = 'none';
     }
   };
 
@@ -93,8 +98,6 @@
     document.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
   });
-
-  slider.classList.add('hidden');
   effectList.addEventListener('click', onChangeEffect, true);
 
 })();

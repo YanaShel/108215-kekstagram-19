@@ -7,7 +7,7 @@
   var filterBlock = document.querySelector('.img-filters');
   var similarListPictures = document.querySelector('.pictures');
   var filterForm = filterBlock.querySelector('.img-filters__form');
-  var picturesData = [];
+  var picturesData;
 
   var pictureTemplate = document.querySelector('#picture')
     .content
@@ -73,26 +73,26 @@
     renderPictures(copyPictures);
   };
 
-  filterForm.addEventListener('click', function (evt) {
-    if (evt.target.id === 'filter-default') {
-      onFilterChange(renderPictures);
-    }
-    if (evt.target.id === 'filter-random') {
-      onFilterChange(renderRandomPictures);
-    }
-    if (evt.target.id === 'filter-discussed') {
-      onFilterChange(renderDiscussedPictures);
-    }
-    removeActiveBtn();
-    evt.target.classList.add('img-filters__button--active');
-  }, true);
-
   var onFilterChange = window.utils.debounce(function (callback) {
     cleanPictures();
     callback(picturesData);
   });
 
-  window.backend.load(loadPictureData);
+  filterForm.addEventListener('click', function (evt) {
+    switch (evt.target.id) {
+      case 'filter-random':
+        onFilterChange(renderRandomPictures);
+        break;
+      case 'filter-discussed':
+        onFilterChange(renderDiscussedPictures);
+        break;
+      default:
+        onFilterChange(renderPictures);
+    }
+    removeActiveBtn();
+    evt.target.classList.add('img-filters__button--active');
+  }, true);
 
+  window.backend.load(loadPictureData);
 })();
 
