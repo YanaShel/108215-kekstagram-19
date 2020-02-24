@@ -2,6 +2,7 @@
 
 (function () {
 
+  var bodyTag = document.body;
   var hashtagInput = document.querySelector('.text__hashtags');
   var formUpload = document.querySelector('.img-upload__form');
   var imageEditor = document.querySelector('.img-upload__overlay');
@@ -90,6 +91,7 @@
         removeMessage();
       }
     });
+    bodyTag.classList.remove('modal-open');
     window.form.resetForm();
   };
 

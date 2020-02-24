@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+
+  var bodyTag = document.body;
   var upLoadFileInput = document.querySelector('#upload-file');
   var imageEditor = document.querySelector('.img-upload__overlay');
   var loadPhotoInput = document.querySelector('#upload-file');
@@ -11,7 +13,6 @@
   var slider = imageEditor.querySelector('.effect-level');
   var imgPreviewWrapper = imageEditor.querySelector('.img-upload__preview');
   var imgPreview = imgPreviewWrapper.querySelector('.img-upload__preview img');
-  var bodyTag = document.body;
 
   var resetForm = function () {
     loadPhotoInput.value = '';
