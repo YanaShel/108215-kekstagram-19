@@ -1,11 +1,11 @@
 'use strict';
 
 (function () {
+  var imgPreviewWrapper = document.querySelector('.img-upload__preview');
   var scaleContainer = document.querySelector('.scale');
   var btnSmaller = scaleContainer.querySelector('.scale__control--smaller');
   var btnBigger = scaleContainer.querySelector('.scale__control--bigger');
   var scaleInput = scaleContainer.querySelector('.scale__control--value');
-  var imgPreviewWrapper = document.querySelector('.img-upload__preview');
 
   var zoom = function (evt) {
     var currentScale = scaleInput.value.slice(0, 3);
