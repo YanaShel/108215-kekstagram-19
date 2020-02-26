@@ -36,12 +36,18 @@
     RANDOM: 10
   };
 
+  var Comment = {
+    INITIAL_QUANTITY: 0,
+    PORTION: 5
+  };
+
   window.const = {
     Kye: Kye,
     FieldStyle: FieldStyle,
     Effect: Effect,
     Hashtag: Hashtag,
     Scale: Scale,
-    QuantityPicture: QuantityPicture
+    QuantityPicture: QuantityPicture,
+    Comment: Comment
   };
 })();

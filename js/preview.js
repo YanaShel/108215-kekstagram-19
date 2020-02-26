@@ -1,10 +1,7 @@
 'use strict';
 
 (function () {
-  var INITIAL_NUMBER_OF_COMMENTS = 0;
-  var PORTION_COMMENTS = 5;
-  var IMAGE_TAG = 'img';
-
+  var IMAGE_TAG_NAME = 'img';
   var bodyTag = document.body;
   var picturesWrapper = bodyTag.querySelector('.pictures');
   var bigPicture = bodyTag.querySelector('.big-picture');
@@ -30,11 +27,11 @@
 
   var showLoaderBtn = function (quantityComments) {
     var counter;
-    if (commentsData.length <= quantityComments + PORTION_COMMENTS) {
+    if (commentsData.length <= quantityComments + window.const.Comment.PORTION) {
       counter = commentsData.length;
       loaderButton.classList.add('hidden');
     } else {
-      counter = quantityComments + PORTION_COMMENTS;
+      counter = quantityComments + window.const.Comment.PORTION;
       loaderButton.classList.remove('hidden');
     }
     return counter;
@@ -54,7 +51,7 @@
 
   var renderComments = function (comments) {
     commentsData = comments;
-    var numberCommentsDisplay = INITIAL_NUMBER_OF_COMMENTS;
+    var numberCommentsDisplay = window.const.Comment.INITIAL_QUANTITY;
     var counter = showLoaderBtn(numberCommentsDisplay);
     showComments(numberCommentsDisplay, counter, true);
   };
@@ -82,7 +79,7 @@
   };
 
   var onPictureClick = function (evt) {
-    if (evt.target.tagName.toLowerCase() === IMAGE_TAG) {
+    if (evt.target.tagName.toLowerCase() === IMAGE_TAG_NAME) {
       var srcActivePicture = evt.target.attributes.src.value;
       showBigPhoto(srcActivePicture);
     }
