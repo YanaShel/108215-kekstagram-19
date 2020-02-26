@@ -18,6 +18,14 @@
       }
     });
 
+    xhr.addEventListener('error', function () {
+      onError();
+    });
+
+    xhr.addEventListener('timeout', function () {
+      onError();
+    });
+
     return xhr;
   };
 

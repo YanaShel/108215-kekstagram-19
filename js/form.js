@@ -1,11 +1,9 @@
 'use strict';
 
 (function () {
-
   var bodyTag = document.body;
-  var upLoadFileInput = document.querySelector('#upload-file');
-  var imageEditor = document.querySelector('.img-upload__overlay');
-  var loadPhotoInput = document.querySelector('#upload-file');
+  var upLoadFileInput = bodyTag.querySelector('#upload-file');
+  var imageEditor = bodyTag.querySelector('.img-upload__overlay');
   var scaleInput = imageEditor.querySelector('.scale__control--value');
   var closeBtnEditor = imageEditor.querySelector('#upload-cancel');
   var hashtagInput = imageEditor.querySelector('.text__hashtags');
@@ -15,17 +13,18 @@
   var imgPreview = imgPreviewWrapper.querySelector('.img-upload__preview img');
 
   var resetForm = function () {
-    loadPhotoInput.value = '';
+    upLoadFileInput.value = '';
     scaleInput.value = '100%';
     imgPreviewWrapper.style.transform = 'scale(1)';
     imgPreview.style.filter = 'none';
     hashtagInput.value = '';
+    hashtagInput.style.backgroundColor = window.const.FieldStyle.VALID;
     commentDescription.value = '';
     slider.classList.add('hidden');
   };
 
   var onImgEditorEscPress = function (evt) {
-    if (evt.key === window.utils.ESC_KEY && evt.target !== hashtagInput && evt.target !== commentDescription) {
+    if (evt.key === window.const.Kye.ESC && evt.target !== hashtagInput && evt.target !== commentDescription) {
       imageEditor.classList.add('hidden');
       resetForm();
     }
