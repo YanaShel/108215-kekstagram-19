@@ -2,10 +2,10 @@
 
 (function () {
   var bodyTag = document.body;
+  var mainTag = bodyTag.querySelector('main');
   var formUpload = bodyTag.querySelector('.img-upload__form');
   var hashtagInput = formUpload.querySelector('.text__hashtags');
   var imageEditor = formUpload.querySelector('.img-upload__overlay');
-  var mainTag = document.querySelector('main');
   var pattern = /^\#[а-яА-ЯёЁa-zA-Z0-9]+$/;
   var validate = true;
 

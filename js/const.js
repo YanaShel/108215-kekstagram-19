@@ -1,7 +1,10 @@
 'use strict';
 
 (function () {
-  var Kye = {
+  var DEBOUNCE_INTERVAL = 500;
+  var IMAGE_TAG = 'img';
+
+  var Key = {
     ESC: 'Escape',
     ENTER: 'Enter'
   };
@@ -42,12 +45,14 @@
   };
 
   window.const = {
-    Kye: Kye,
+    Key: Key,
     FieldStyle: FieldStyle,
     Effect: Effect,
     Hashtag: Hashtag,
     Scale: Scale,
     QuantityPicture: QuantityPicture,
-    Comment: Comment
+    Comment: Comment,
+    DEBOUNCE_INTERVAL: DEBOUNCE_INTERVAL,
+    IMAGE_TAG: IMAGE_TAG
   };
 })();

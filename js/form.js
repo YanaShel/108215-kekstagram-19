@@ -24,7 +24,7 @@
   };
 
   var onImgEditorEscPress = function (evt) {
-    if (evt.key === window.const.Kye.ESC && evt.target !== hashtagInput && evt.target !== commentDescription) {
+    if (evt.key === window.const.Key.ESC && evt.target !== hashtagInput && evt.target !== commentDescription) {
       imageEditor.classList.add('hidden');
       resetForm();
     }

@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var DEBOUNCE_INTERVAL = 500;
-
   var getRandomIndex = function (arr) {
     return Math.floor(Math.random() * arr.length);
   };
@@ -16,7 +14,7 @@
       }
       lastTimeout = window.setTimeout(function () {
         cb.apply(null, parameters);
-      }, DEBOUNCE_INTERVAL);
+      }, window.const.DEBOUNCE_INTERVAL);
     };
   };
 

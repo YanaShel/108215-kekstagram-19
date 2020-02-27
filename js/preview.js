@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var IMAGE_TAG_NAME = 'img';
   var bodyTag = document.body;
   var picturesWrapper = bodyTag.querySelector('.pictures');
   var bigPicture = bodyTag.querySelector('.big-picture');
@@ -79,7 +78,7 @@
   };
 
   var onPictureClick = function (evt) {
-    if (evt.target.tagName.toLowerCase() === IMAGE_TAG_NAME) {
+    if (evt.target.tagName.toLowerCase() === window.const.IMAGE_TAG) {
       var srcActivePicture = evt.target.attributes.src.value;
       showBigPhoto(srcActivePicture);
     }
@@ -92,14 +91,14 @@
   };
 
   var onPictureEnterPress = function (evt) {
-    if (evt.key === window.const.Kye.ENTER) {
+    if (evt.key === window.const.Key.ENTER) {
       var srcActivePicture = evt.target.children[0].attributes.src.value;
       showBigPhoto(srcActivePicture);
     }
   };
 
   var onEscapePressPopup = function (evt) {
-    if (evt.key === window.const.Kye.ESC) {
+    if (evt.key === window.const.Key.ESC) {
       closePopupPreview();
     }
   };
