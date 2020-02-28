@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var IMAGE_TAG = 'img';
   var Comment = {
     INITIAL_QUANTITY: 0,
     PORTION: 5
@@ -83,7 +84,7 @@
   };
 
   var onPictureClick = function (evt) {
-    if (evt.target.tagName.toLowerCase() === 'img') {
+    if (evt.target.tagName.toLowerCase() === IMAGE_TAG) {
       var srcActivePicture = evt.target.attributes.src.value;
       showBigPhoto(srcActivePicture);
     }
