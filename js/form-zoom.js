@@ -1,6 +1,12 @@
 'use strict';
 
 (function () {
+  var Scale = {
+    STEP: 25,
+    MIN: 25,
+    MAX: 100
+  };
+
   var imgPreviewWrapper = document.querySelector('.img-upload__preview');
   var scaleContainer = document.querySelector('.scale');
   var btnSmaller = scaleContainer.querySelector('.scale__control--smaller');
@@ -10,13 +16,13 @@
   var zoom = function (evt) {
     var currentScale = scaleInput.value.slice(0, 3);
     currentScale = parseInt(currentScale, 10);
-    if (evt.target === btnBigger && currentScale < window.const.Scale.MAX) {
-      scaleInput.value = currentScale + window.const.Scale.STEP;
+    if (evt.target === btnBigger && currentScale < Scale.MAX) {
+      scaleInput.value = currentScale + Scale.STEP;
     }
-    if (evt.target === btnSmaller && currentScale > window.const.Scale.MIN) {
-      scaleInput.value = currentScale - window.const.Scale.STEP;
+    if (evt.target === btnSmaller && currentScale > Scale.MIN) {
+      scaleInput.value = currentScale - Scale.STEP;
     }
-    imgPreviewWrapper.style.transform = 'scale(' + scaleInput.value / window.const.Scale.MAX + ')';
+    imgPreviewWrapper.style.transform = 'scale(' + scaleInput.value / Scale.MAX + ')';
     if (scaleInput.value.substr(-1) !== '%') {
       scaleInput.value += '%';
     }

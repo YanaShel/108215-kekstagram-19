@@ -1,6 +1,11 @@
 'use strict';
 
 (function () {
+  var QuantityPicture = {
+    DEFAULT: 25,
+    RANDOM: 10
+  };
+
   var filterBlock = document.querySelector('.img-filters');
   var similarListPictures = document.querySelector('.pictures');
   var filterForm = filterBlock.querySelector('.img-filters__form');
@@ -45,7 +50,7 @@
 
   var renderPictures = function (pictures) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.const.QuantityPicture.DEFAULT; i++) {
+    for (var i = 0; i < QuantityPicture.DEFAULT; i++) {
       fragment.appendChild(renderPicture(pictures[i]));
     }
     similarListPictures.appendChild(fragment);
@@ -54,7 +59,7 @@
   var renderRandomPictures = function (pictures) {
     var copyPictures = pictures.slice();
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.const.QuantityPicture.RANDOM; i++) {
+    for (var i = 0; i < QuantityPicture.RANDOM; i++) {
       var pictureIndex = window.utils.getRandomIndex(copyPictures);
       fragment.appendChild(renderPicture(copyPictures[pictureIndex]));
       copyPictures.splice(pictureIndex, 1);

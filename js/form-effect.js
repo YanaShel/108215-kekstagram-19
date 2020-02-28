@@ -1,6 +1,22 @@
 'use strict';
 
 (function () {
+  var Effect = {
+    DEFAULT: 'none',
+    CHROME: 'chrome',
+    SEPIA: 'sepia',
+    MARVIN: 'marvin',
+    PHOBOS: 'phobos',
+    HEAT: 'heat'
+  };
+
+  var FilterCoefficient = {
+    CHROME: 100,
+    SEPIA: 100,
+    PHOBOS: 0.03,
+    HEAT: 0.02
+  };
+
   var slider = document.querySelector('.effect-level');
   var imgPreview = document.querySelector('.img-upload__preview img');
   var effectList = document.querySelector('.effects__list');
@@ -26,7 +42,7 @@
   var onChangeEffect = function (evt) {
     sliderPin.style.left = '100%';
     sliderDepthColor.style.width = '100%';
-    if (evt.target.value === window.const.Effect.DEFAULT) {
+    if (evt.target.value === Effect.DEFAULT) {
       imgPreview.style.filter = 'none';
       slider.classList.add('hidden');
     } else {
@@ -38,26 +54,26 @@
 
   var updateEffect = function (effectName) {
     var EffectValue = {
-      CHROME: getEffectPercentLevel() / 100,
-      SEPIA: getEffectPercentLevel() / 100,
+      CHROME: getEffectPercentLevel() / FilterCoefficient.CHROME,
+      SEPIA: getEffectPercentLevel() / FilterCoefficient.SEPIA,
       MARVIN: getEffectPercentLevel(),
-      PHOBOS: getEffectPercentLevel() * 0.03,
-      HEAT: (getEffectPercentLevel() * 0.02) + 1
+      PHOBOS: getEffectPercentLevel() * FilterCoefficient.PHOBOS,
+      HEAT: (getEffectPercentLevel() * FilterCoefficient.HEAT) + 1
     };
     switch (effectName) {
-      case window.const.Effect.CHROME:
+      case Effect.CHROME:
         imgPreview.style.filter = 'grayscale(' + EffectValue.CHROME + ')';
         break;
-      case window.const.Effect.SEPIA:
+      case Effect.SEPIA:
         imgPreview.style.filter = 'sepia(' + EffectValue.SEPIA + ')';
         break;
-      case window.const.Effect.MARVIN:
+      case Effect.MARVIN:
         imgPreview.style.filter = 'invert(' + EffectValue.MARVIN + '%)';
         break;
-      case window.const.Effect.PHOBOS:
+      case Effect.PHOBOS:
         imgPreview.style.filter = 'blur(' + EffectValue.PHOBOS + 'px)';
         break;
-      case window.const.Effect.HEAT:
+      case Effect.HEAT:
         imgPreview.style.filter = 'brightness(' + EffectValue.HEAT + ')';
         break;
       default:

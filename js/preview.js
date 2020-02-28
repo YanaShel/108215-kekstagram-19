@@ -1,6 +1,11 @@
 'use strict';
 
 (function () {
+  var Comment = {
+    INITIAL_QUANTITY: 0,
+    PORTION: 5
+  };
+
   var bodyTag = document.body;
   var picturesWrapper = bodyTag.querySelector('.pictures');
   var bigPicture = bodyTag.querySelector('.big-picture');
@@ -26,11 +31,11 @@
 
   var showLoaderBtn = function (quantityComments) {
     var counter;
-    if (commentsData.length <= quantityComments + window.const.Comment.PORTION) {
+    if (commentsData.length <= quantityComments + Comment.PORTION) {
       counter = commentsData.length;
       loaderButton.classList.add('hidden');
     } else {
-      counter = quantityComments + window.const.Comment.PORTION;
+      counter = quantityComments + Comment.PORTION;
       loaderButton.classList.remove('hidden');
     }
     return counter;
@@ -50,7 +55,7 @@
 
   var renderComments = function (comments) {
     commentsData = comments;
-    var numberCommentsDisplay = window.const.Comment.INITIAL_QUANTITY;
+    var numberCommentsDisplay = Comment.INITIAL_QUANTITY;
     var counter = showLoaderBtn(numberCommentsDisplay);
     showComments(numberCommentsDisplay, counter, true);
   };
@@ -78,7 +83,7 @@
   };
 
   var onPictureClick = function (evt) {
-    if (evt.target.tagName.toLowerCase() === window.const.IMAGE_TAG) {
+    if (evt.target.tagName.toLowerCase() === 'img') {
       var srcActivePicture = evt.target.attributes.src.value;
       showBigPhoto(srcActivePicture);
     }
@@ -91,14 +96,14 @@
   };
 
   var onPictureEnterPress = function (evt) {
-    if (evt.key === window.const.Key.ENTER) {
+    if (evt.key === window.utils.Key.ENTER) {
       var srcActivePicture = evt.target.children[0].attributes.src.value;
       showBigPhoto(srcActivePicture);
     }
   };
 
   var onEscapePressPopup = function (evt) {
-    if (evt.key === window.const.Key.ESC) {
+    if (evt.key === window.utils.Key.ESC) {
       closePopupPreview();
     }
   };

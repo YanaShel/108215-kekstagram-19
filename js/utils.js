@@ -1,6 +1,18 @@
 'use strict';
 
 (function () {
+  var DEBOUNCE_INTERVAL = 500;
+
+  var Key = {
+    ESC: 'Escape',
+    ENTER: 'Enter'
+  };
+
+  var FieldStyle = {
+    VALID: '#ffffff',
+    INVALID: '#F6CECE'
+  };
+
   var getRandomIndex = function (arr) {
     return Math.floor(Math.random() * arr.length);
   };
@@ -14,11 +26,13 @@
       }
       lastTimeout = window.setTimeout(function () {
         cb.apply(null, parameters);
-      }, window.const.DEBOUNCE_INTERVAL);
+      }, DEBOUNCE_INTERVAL);
     };
   };
 
   window.utils = {
+    Key: Key,
+    FieldStyle: FieldStyle,
     getRandomIndex: getRandomIndex,
     debounce: debounce
   };

@@ -18,13 +18,13 @@
     imgPreviewWrapper.style.transform = 'scale(1)';
     imgPreview.style.filter = 'none';
     hashtagInput.value = '';
-    hashtagInput.style.backgroundColor = window.const.FieldStyle.VALID;
+    hashtagInput.style.backgroundColor = window.utils.FieldStyle.VALID;
     commentDescription.value = '';
     slider.classList.add('hidden');
   };
 
   var onImgEditorEscPress = function (evt) {
-    if (evt.key === window.const.Key.ESC && evt.target !== hashtagInput && evt.target !== commentDescription) {
+    if (evt.key === window.utils.Key.ESC && evt.target !== hashtagInput && evt.target !== commentDescription) {
       imageEditor.classList.add('hidden');
       resetForm();
     }
